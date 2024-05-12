@@ -273,6 +273,3 @@ print("結果を保存します")
 best_individual = tools.selBest(population, k=1)[0]
 np.save(sys.argv[4], best_individual)
 print("DONE!")
-
-print("-----")
-print(f"最も良い個体: {best_individual}、そのときの目的関数の値は {(best_individual.fitness.values)}")

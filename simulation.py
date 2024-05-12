@@ -4,12 +4,7 @@ import numpy as np
 
 def calculate_index(player_hand, dealer_hand):
 
-    if (player_hand < 17):
-        print("Hit")
-        exit()
-    elif (player_hand >= 17):
-        print("stand")
-    elif (dealer_hand == 11) and (player_hand >= 17):
+    if (dealer_hand == 11) and (player_hand >= 17):
         print("No Insurance + Stand")
         exit()
     elif (dealer_hand == 11) and (player_hand < 17):
@@ -36,7 +31,8 @@ else:
     model = np.load(sys.argv[1])
     dealer_hand = int(sys.argv[2])    
     player_hand = int(sys.argv[3])
-
+    print()
+    print("----------------")
     print("Model DNA Info")
     print(model)
     print("----------------")
