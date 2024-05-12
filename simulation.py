@@ -4,7 +4,12 @@ import numpy as np
 
 def calculate_index(player_hand, dealer_hand):
 
-    if (dealer_hand == 11) and (player_hand >= 17):
+    if (player_hand < 17):
+        print("Hit")
+        exit()
+    elif (player_hand >= 17):
+        print("stand")
+    elif (dealer_hand == 11) and (player_hand >= 17):
         print("No Insurance + Stand")
         exit()
     elif (dealer_hand == 11) and (player_hand < 17):
