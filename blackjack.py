@@ -43,7 +43,7 @@ values = {
 
 playing = True
 
-# CLASS DEFINTIONS:
+# CLASS DEFINTIONS:/
 
 
 class Card:
@@ -159,17 +159,7 @@ def push(player, dealer):
 # GAMEPLAY!
 
 while True:
-    print("\n----------------------------------------------------------------")
-    print("                ♠♣♥♦ WELCOME TO BLACKJACK! ♠♣♥♦")
-    print("                          Lets Play!")
-    print("----------------------------------------------------------------")
-    print(
-        "Game Rules:  Get as close to 21 as you can without going over!\n\
-        Dealer hits until he/she reaches 17.\n\
-        Aces count as 1 or 11."
-    )
 
-    # Create & shuffle the deck, deal two cards to each player
     deck = Deck()
     deck.shuffle()
 
@@ -200,11 +190,6 @@ while True:
         while dealer_hand.value < 17:
             hit(deck, dealer_hand)
 
-        # Show all cards
-        time.sleep(1)
-        print("\n----------------------------------------------------------------")
-        print("                     ★ Final Results ★")
-        print("----------------------------------------------------------------")
 
         show_all(player_hand, dealer_hand)
 
@@ -222,6 +207,7 @@ while True:
             push(player_hand, dealer_hand)
 
     # Ask to play again
+    
     new_game = input("\nPlay another hand? [Y/N] ")
     while new_game.lower() not in ["y", "n"]:
         new_game = input("Invalid Input. Please enter 'y' or 'n' ")
@@ -229,5 +215,4 @@ while True:
         playing = True
         continue
     else:
-        print("\n------------------------Thanks for playing!---------------------\n")
         break
