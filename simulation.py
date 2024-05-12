@@ -7,7 +7,7 @@ def calculate_index(player_hand, dealer_hand):
     if (dealer_hand == 11) and (player_hand >= 17):
         print("No Insurance + Stand")
         exit()
-    elif (dealer_hand == 11) and (player_hand < 10):
+    elif (dealer_hand == 11) and (player_hand < 17):
         print("Bet Insurance + Hit")
         exit()
     else: 
