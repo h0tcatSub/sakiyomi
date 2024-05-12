@@ -243,8 +243,9 @@ toolbox.register("mate", tools.cxTwoPoint)
 toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
 toolbox.register("select", tools.selTournament, tournsize=3)
 
-NGEN = 150
-pop = toolbox.population(n=200)
+NGEN = int(sys.argv[1])
+pop = toolbox.population(n=int(sys.argv[2]))
+                                             
 hof = tools.ParetoFront()
 stats = tools.Statistics(lambda ind: ind.fitness.values)
 stats.register("avg", np.mean, axis=0)
@@ -253,7 +254,7 @@ stats.register("min", np.min, axis=0)
 stats.register("max", np.max, axis=0)
 
 
-population = toolbox.population(n=30)  #n = 個体 
+population = toolbox.population(n=int(sys.argv[3]))  #n = 個体 
 for individual in pop:
     individual.fitness.values = toolbox.evaluate(individual)
 hof = tools.ParetoFront()
@@ -270,7 +271,7 @@ algorithms.eaSimple(pop, toolbox, cxpb=0.9, mutpb=0.1, ngen=NGEN, halloffame=hof
 # 結果の保存
 print("結果を保存します")
 best_individual = tools.selBest(population, k=1)[0]
-np.save(sys.argv[1], best_individual)
+np.save(sys.argv[4], best_individual)
 print("DONE!")
 
 print("-----")
