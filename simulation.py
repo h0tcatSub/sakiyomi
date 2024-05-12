@@ -26,11 +26,11 @@ def calculate_index(player_hand, dealer_hand):
 
 
 if len(sys.argv) != 4:
-    print("Usage: simulation.py model_file_name player_hand_score dealer_first_hand_score", file=sys.stderr)
+    print("Usage: simulation.py model_file_name dealer_first_hand_score player_hand_score", file=sys.stderr)
 else:
     model = np.load(sys.argv[1])
-    player_hand = int(sys.argv[2])    
-    dealer_hand = int(sys.argv[3])    
+    dealer_hand = int(sys.argv[2])    
+    player_hand = int(sys.argv[3])
 
     print("Model DNA Info")
     print(model)
