@@ -1,10 +1,11 @@
 from deap import base, creator, tools, algorithms
 import random
 import numpy as np
-import time
+
+
+################################################################################################################################
 # Submitted by : Sheetal Bongale
 # Python script simulates a simple command-line Blackjack game implemented using Python and Object Oriented Programming concepts
-# System Requirements: Python 3.8 (Python3)
 ################################################################################################################################
 import sys
 import random
