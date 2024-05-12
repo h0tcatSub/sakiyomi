@@ -9,19 +9,19 @@ def calculate_index(player_hand, dealer_hand):
         return
     elif dealer_hand == 11 and ((player_hand < 10)):
         print("Bet Insurance + Hit")
-        return
-    index = (player_hand % 11)* 10 % 13 
-    index += dealer_hand
+    else: 
+        index = (player_hand % 11)* 10 % 13 
+        index += dealer_hand
 
-    print("----- result -----")
-    print()
-    # best_strategyのインデックスに対応する行動を取得
-    action = model[index]
-    if action == 0:
-        print("stand")
-    else:
-        print("hit")
-    return index
+        print("----- result -----")
+        print()
+        # best_strategyのインデックスに対応する行動を取得
+        action = model[index]
+        if action == 0:
+            print("stand")
+        else:
+            print("hit")
+        return index
 
 
 if len(sys.argv) != 4:
