@@ -3,13 +3,14 @@ import numpy as np
 
 
 def calculate_index(player_hand, dealer_hand):
+
     if dealer_hand == 11 and ((player_hand >= 17)):
         print("No Insurance + Stand")
         return
     elif dealer_hand == 11 and ((player_hand < 10)):
         print("Bet Insurance + Hit")
         return
-    index += player_hand * 10 % 13 
+    index = (player_hand % 11)* 10 % 13 
     index += dealer_hand
 
     print("----- result -----")
