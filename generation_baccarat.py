@@ -71,7 +71,7 @@ def evaluate(individual):
 
     print(play())
 
-creator.create("FitnessMax", base.Fitness, weights=(0.4462))
+creator.create("FitnessMax", base.Fitness, weights=(0.4462)) # Player win percentage
 creator.create("Individual", list, fitness=creator.FitnessMax)
 
 NGEN = int(sys.argv[1])
