@@ -239,8 +239,6 @@ stats.register("max", np.max, axis=0)
 try:
     for individual in pop:
         individual.fitness.values = toolbox.evaluate(individual)
-    hof = tools.ParetoFront()
-
     algorithms.eaSimple(pop, toolbox, cxpb=0.9, mutpb=0.1, ngen=NGEN, halloffame=hof, stats=stats, verbose=True)
 
 except KeyboardInterrupt:
