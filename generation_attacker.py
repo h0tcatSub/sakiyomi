@@ -211,9 +211,9 @@ def evaluate(individual):
                 player_win_point += push(player_hand, dealer_hand)
     ind_reward = None
     if player_win_point > 0:
-        ind_reward = 1.5
-    elif player_win_point == 0:
         ind_reward = 1
+    elif player_win_point == 0:
+        ind_reward = 0
     else:
         ind_reward = -1
     return ind_reward,
