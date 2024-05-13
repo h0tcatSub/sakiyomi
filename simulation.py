@@ -11,6 +11,7 @@ def calculate_index(player_hand, dealer_hand):
         print("No Insurance")
     elif (dealer_hand == 11) and (player_hand < 17):
         print("Bet Insurance")
+
     print()
     index = (((player_hand) ))
     index += (dealer_hand + 10) * 13 # 基本的にディーラーが伏せているカードは10という前提
