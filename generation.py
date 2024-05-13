@@ -164,8 +164,14 @@ def evaluate(individual):
     dealer_hand.add_card(deck.deal())
     x = None
     while True:
-        index = (player_hand.value % 11)* 10 % 13 
-        index += dealer_hand.value
+        if (dealer_hand == 11) and (player_hand >= 17):
+            print("No Insurance")
+        elif (dealer_hand == 11) and (player_hand < 17):
+            print("Bet Insurance")
+        print()
+        index = ((player_hand % 11) * 13 % len(individual)) - 1
+        index += dealer_hand * 13 
+        index %= len(individual)
 
         if individual[index] == 0:
             x = "s"
