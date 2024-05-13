@@ -164,7 +164,7 @@ def evaluate(individual):
         index = ((player_hand.value % 11) * 13 % len(individual)) - 1
         index += dealer_hand.value * 13 
         index %= len(individual)
-
+        index -= 1
         if individual[index] == 0:
             x = "s"
         elif individual[index] == 1:
