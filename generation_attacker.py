@@ -44,9 +44,10 @@ def evaluate(individual):
                 "K",
                 "A",
             )
-            for suit in suits:
-                for rank in self.ranks:
-                    self.deck.append(Card(suit, rank))
+            for i in range(4):
+                for suit in suits:
+                    for rank in self.ranks:
+                        self.deck.append(Card(suit, rank))
 
         def __str__(self):
             deck_comp = ""  # start with an empty string
@@ -58,6 +59,8 @@ def evaluate(individual):
             random.shuffle(self.deck)
 
         def deal(self):
+            if(len(self.deck) == 0):
+                return Card("Spade", random.choice(self.ranks))
             single_card = self.deck.pop()
             return single_card
 
@@ -112,33 +115,23 @@ def evaluate(individual):
                 self.value -= 10
                 self.aces -= 1
 
-    def show_all(player, dealer):
-        print("\nPlayer's Hand:", *player.cards, sep="\n ")
-        print("Player's Hand =", player.value)
-        print("\nDealer's Hand:", *dealer.cards, sep="\n ")
-        print("Dealer's Hand =", dealer.value)
 
     def player_busts(player, dealer):
-        #print("\n--- Player busts! ---")
-        return -1,
+        return -1
 
 
     def player_wins(player, dealer):
-        #print("\n--- You win! ---")
-        return 1,
+        return 1
 
     def dealer_busts(player, dealer):
-        #print("\n--- You win! ---")
-        return 1,
+        return 1
 
 
     def dealer_wins(player, dealer):
-        #print("\n--- Dealer wins! ---")
-        return -1,
+        return -1
 
     def push(player, dealer):
-        #print("\nIts a tie!")
-        return 0,
+        return 0
 
     # FUNCTION DEFINITIONS:
 
@@ -158,8 +151,9 @@ def evaluate(individual):
     player_hand.add_card(deck.deal())
     dealer_hand.add_card(deck.deal())
     x = None
-    while True:
-        index = ((player_hand.value) * 13 % len(individual))
+    player_win_point = 0
+    while len(deck.deck) > 0:
+        index = ((player_hand.value) * 13 % len(individual)) + random.randint(0, sum(individual))
         index += (dealer_hand.value)
         index %= len(individual)
         if individual[index] == 0:
@@ -168,53 +162,62 @@ def evaluate(individual):
             x = "h"
         elif individual[index] == 2:
             x = "d" # double down
-        
         if x[0].lower() == "h":
             hit(deck, player_hand)  # hit() function defined above
             if player_hand.value > 21:
-                return player_busts(player_hand, dealer_hand)
+                player_win_point += player_busts(player_hand, dealer_hand)
             
         elif x[0].lower() == "d":
             if (player_hand.value != 10) or (player_hand.value != 11) or (player_hand.value != 9):
                 hit(deck, player_hand)  # hit() function defined above
                 if player_hand.value > 21:
-                    return player_busts(player_hand, dealer_hand)
+                    player_win_point += player_busts(player_hand, dealer_hand)
             else:
                 hit(deck, player_hand)  # hit() function defined above
                 if player_hand.value > 21:
-                    return player_busts(player_hand, dealer_hand)
+                    player_win_point += player_busts(player_hand, dealer_hand)
 
                 while dealer_hand.value < 17:
                     hit(deck, dealer_hand)
 
 
                 if dealer_hand.value > 21:
-                    return dealer_busts(player_hand, dealer_hand)
+                    player_win_point += dealer_busts(player_hand, dealer_hand)
 
                 elif dealer_hand.value > player_hand.value:
-                    return dealer_wins(player_hand, dealer_hand)
+                    player_win_point += dealer_wins(player_hand, dealer_hand)
 
                 elif dealer_hand.value < player_hand.value:
-                    return player_wins(player_hand, dealer_hand)
+                    player_win_point += player_wins(player_hand, dealer_hand)
 
                 else:
-                    return push(player_hand, dealer_hand)
+                    player_win_point += push(player_hand, dealer_hand)
+
         else:
             while dealer_hand.value < 17:
                 hit(deck, dealer_hand)
 
 
             if dealer_hand.value > 21:
-                return dealer_busts(player_hand, dealer_hand)
+                player_win_point += dealer_busts(player_hand, dealer_hand)
 
             elif dealer_hand.value > player_hand.value:
-                return dealer_wins(player_hand, dealer_hand)
+                player_win_point += dealer_wins(player_hand, dealer_hand)
 
             elif dealer_hand.value < player_hand.value:
-                return player_wins(player_hand, dealer_hand)
+                player_win_point += player_wins(player_hand, dealer_hand)
 
             else:
-                return push(player_hand, dealer_hand)
+                player_win_point += push(player_hand, dealer_hand)
+    ind_reward = None
+    if player_win_point > 0:
+        ind_reward = 1.5
+    elif player_win_point == 0:
+        ind_reward = 1
+    else:
+        ind_reward = -1
+    return ind_reward,
+            
 
 NGEN = int(sys.argv[1])
 toolbox = base.Toolbox()
@@ -235,17 +238,12 @@ stats.register("std", np.std, axis=0)
 stats.register("min", np.min, axis=0)
 stats.register("max", np.max, axis=0)
 
+for individual in pop:
+    individual.fitness.values = toolbox.evaluate(individual)
+algorithms.eaSimple(pop, toolbox, cxpb=0.9, mutpb=0.1, ngen=NGEN, halloffame=hof, stats=stats, verbose=True)
 
-try:
-    for individual in pop:
-        individual.fitness.values = toolbox.evaluate(individual)
-    algorithms.eaSimple(pop, toolbox, cxpb=0.9, mutpb=0.1, ngen=NGEN, halloffame=hof, stats=stats, verbose=True)
-
-except KeyboardInterrupt:
-    pass
-finally:
-    print("結果を保存します")
-    best_individual = tools.selBest(pop, k=1)[0]
-    print(f"最良個体 : {best_individual}")
-    np.save(sys.argv[2], best_individual)
-    print("DONE!")
+print("結果を保存します")
+best_individual = tools.selBest(pop, k=1)[0]
+print(f"最良個体 : {best_individual}")
+np.save(sys.argv[2], best_individual)
+print("DONE!")
