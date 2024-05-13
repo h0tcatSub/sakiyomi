@@ -166,6 +166,7 @@ def evaluate(individual):
     while True:
         index = (player_hand.value % 11)* 10 % 13 
         index += dealer_hand.value
+
         if individual[index] == 0:
             x = "s"
         elif individual[index] == 1:
@@ -204,22 +205,21 @@ def evaluate(individual):
                 else:
                     return push(player_hand, dealer_hand)
         else:
-            if player_hand.value <= 21:
-                while dealer_hand.value < 17:
-                    hit(deck, dealer_hand)
+            while dealer_hand.value < 17:
+                hit(deck, dealer_hand)
 
 
-                if dealer_hand.value > 21:
-                    return dealer_busts(player_hand, dealer_hand)
+            if dealer_hand.value > 21:
+                return dealer_busts(player_hand, dealer_hand)
 
-                elif dealer_hand.value > player_hand.value:
-                    return dealer_wins(player_hand, dealer_hand)
+            elif dealer_hand.value > player_hand.value:
+                return dealer_wins(player_hand, dealer_hand)
 
-                elif dealer_hand.value < player_hand.value:
-                    return player_wins(player_hand, dealer_hand)
+            elif dealer_hand.value < player_hand.value:
+                return player_wins(player_hand, dealer_hand)
 
-                else:
-                    return push(player_hand, dealer_hand)
+            else:
+                return push(player_hand, dealer_hand)
 
 NGEN = int(sys.argv[1])
 toolbox = base.Toolbox()
