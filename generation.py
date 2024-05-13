@@ -1,20 +1,18 @@
 from deap import base, creator, tools, algorithms
 import random
 import numpy as np
-
-
-################################################################################################################################
-# Submitted by : Sheetal Bongale
-# Python script simulates a simple command-line Blackjack game implemented using Python and Object Oriented Programming concepts
-################################################################################################################################
 import sys
-import random
 
 # 個体表現と適応度関数
-creator.create("FitnessMax", base.Fitness, weights=(0.509,))  # 勝率を最大化する
+creator.create("FitnessMax", base.Fitness, weights=(0.509,))
 creator.create("Individual", list, fitness=creator.FitnessMax)
 
 def evaluate(individual):
+
+    ################################################################################################################################
+    # Submitted by : Sheetal Bongale
+    # Python script simulates a simple command-line Blackjack game implemented using Python and Object Oriented Programming concepts
+    ################################################################################################################################
     suits = ("Spades ♠", "Clubs ♣", "Hearts ♥", "Diamonds ♦")
 
     class Card:
