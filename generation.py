@@ -124,25 +124,25 @@ def evaluate(individual):
         print("Dealer's Hand =", dealer.value)
 
     def player_busts(player, dealer):
-        print("\n--- Player busts! ---")
+        #print("\n--- Player busts! ---")
         return -1,
 
 
     def player_wins(player, dealer):
-        print("\n--- You win! ---")
+        #print("\n--- You win! ---")
         return 1,
 
     def dealer_busts(player, dealer):
-        print("\n--- You win! ---")
+        #print("\n--- You win! ---")
         return 1,
 
 
     def dealer_wins(player, dealer):
-        print("\n--- Dealer wins! ---")
+        #print("\n--- Dealer wins! ---")
         return -1,
 
     def push(player, dealer):
-        print("\nIts a tie!")
+        #print("\nIts a tie!")
         return 0,
 
     # FUNCTION DEFINITIONS:
@@ -164,9 +164,8 @@ def evaluate(individual):
     dealer_hand.add_card(deck.deal())
     x = None
     while True:
-        
-        index = (player_hand % 11)* 10 % 13 
-        index += dealer_hand
+        index = (player_hand.value % 11)* 10 % 13 
+        index += dealer_hand.value
         if individual[index] == 0:
             x = "s"
         elif individual[index] == 1:
@@ -179,7 +178,7 @@ def evaluate(individual):
             if player_hand.value > 21:
                 return player_busts(player_hand, dealer_hand)
             
-        if x[0].lower() == "d":
+        elif x[0].lower() == "d":
             if (player_hand.value != 10) or (player_hand.value != 11) or (player_hand.value != 9):
                 hit(deck, player_hand)  # hit() function defined above
                 if player_hand.value > 21:
@@ -204,36 +203,35 @@ def evaluate(individual):
 
                 else:
                     return push(player_hand, dealer_hand)
-            
+        else:
+            if player_hand.value <= 21:
+                while dealer_hand.value < 17:
+                    hit(deck, dealer_hand)
 
-        if player_hand.value <= 21:
-            while dealer_hand.value < 17:
-                hit(deck, dealer_hand)
 
+                if dealer_hand.value > 21:
+                    return dealer_busts(player_hand, dealer_hand)
 
-            if dealer_hand.value > 21:
-                return dealer_busts(player_hand, dealer_hand)
+                elif dealer_hand.value > player_hand.value:
+                    return dealer_wins(player_hand, dealer_hand)
 
-            elif dealer_hand.value > player_hand.value:
-                return dealer_wins(player_hand, dealer_hand)
+                elif dealer_hand.value < player_hand.value:
+                    return player_wins(player_hand, dealer_hand)
 
-            elif dealer_hand.value < player_hand.value:
-                return player_wins(player_hand, dealer_hand)
-
-            else:
-                return push(player_hand, dealer_hand)
+                else:
+                    return push(player_hand, dealer_hand)
 
 NGEN = int(sys.argv[1])
 toolbox = base.Toolbox()
-toolbox.register("attr_bool", random.randint, 0, 1, 2)  # ルールを0/1で表現する場合
-toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, n=100)  # 100個のルールを持つ個体
+toolbox.register("attr_bool", random.randint, 0, 2)  # ルールを0/1で表現する場合
+toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, n=170)  # 100個のルールを持つ個体
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("evaluate", evaluate)
 toolbox.register("mate", tools.cxTwoPoint)
 toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
 toolbox.register("select", tools.selTournament, tournsize=5)
+pop = toolbox.population(n=NGEN)
 
-pop = toolbox.population(n=int(sys.argv[2]))
                                              
 hof = tools.ParetoFront()
 stats = tools.Statistics(lambda ind: ind.fitness.values)
@@ -243,7 +241,6 @@ stats.register("min", np.min, axis=0)
 stats.register("max", np.max, axis=0)
 
 
-population = toolbox.population(n=int(sys.argv[3]))  #n = 個体 
 for individual in pop:
     individual.fitness.values = toolbox.evaluate(individual)
 hof = tools.ParetoFront()
@@ -259,6 +256,6 @@ algorithms.eaSimple(pop, toolbox, cxpb=0.9, mutpb=0.1, ngen=NGEN, halloffame=hof
 
 # 結果の保存
 print("結果を保存します")
-best_individual = tools.selBest(population, k=1)[0]
-np.save(sys.argv[4], best_individual)
+best_individual = tools.selBest(pop, k=1)[0]
+np.save(sys.argv[2], best_individual)
 print("DONE!")
