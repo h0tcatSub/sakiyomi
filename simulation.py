@@ -14,7 +14,6 @@ def calculate_index(player_hand, dealer_hand):
     print()
     index = ((player_hand % 11) * 13 % len(model)) - 1
     index += dealer_hand * 13 
-    index -= 1 # 
     index %= len(model)
 
     # best_strategyのインデックスに対応する行動を取得
