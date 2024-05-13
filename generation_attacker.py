@@ -153,7 +153,7 @@ def evaluate(individual):
     x = None
     player_win_point = 0
     while len(deck.deck) > 0:
-        index = ((player_hand.value)) + random.randint(0, 10)
+        index = ((player_hand.value)) + random.randint(0, len(individual))
         index += (dealer_hand.value)
         index %= len(individual)
         if individual[index] == 0:
