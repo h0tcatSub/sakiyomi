@@ -15,7 +15,6 @@ creator.create("FitnessMax", base.Fitness, weights=(1.0,))  # 勝率を最大化
 creator.create("Individual", list, fitness=creator.FitnessMax)
 
 def evaluate(individual):
-
     suits = ("Spades ♠", "Clubs ♣", "Hearts ♥", "Diamonds ♦")
 
     #time.sleep(0.0001)
@@ -126,7 +125,7 @@ def evaluate(individual):
 
 
     def player_busts(player, dealer):
-        return -2,
+        return -1,
 
 
     def player_wins(player, dealer):
@@ -160,68 +159,54 @@ def evaluate(individual):
     player_hand.add_card(deck.deal())
     dealer_hand.add_card(deck.deal())
     x = None
-
     while True:
-        if player_hand.value >= 17:
+        
+        index = (player_hand % 11)* 10 % 13 
+        index += dealer_hand
+        if individual[index] == 0:
             x = "s"
-            while dealer_hand.value < 17:
-                hit(deck, dealer_hand)
-
-
-            show_all(player_hand, dealer_hand)
-
-            # test different winning scenarios
-            if dealer_hand.value > 21:
-                return dealer_busts(player_hand, dealer_hand)
-
-            elif dealer_hand.value > player_hand.value:
-                return dealer_wins(player_hand, dealer_hand)
-
-            elif dealer_hand.value < player_hand.value:
-                return player_wins(player_hand, dealer_hand)
-
-            else:
-                return push(player_hand, dealer_hand)
-        if (dealer_hand.value >= 6) and ((player_hand.value < 17)): 
-            x = "s"
-            while dealer_hand.value < 17:
-                hit(deck, dealer_hand)
-
-
-            show_all(player_hand, dealer_hand)
-
-            # test different winning scenarios
-            if dealer_hand.value > 21:
-                return dealer_busts(player_hand, dealer_hand)
-
-            elif dealer_hand.value > player_hand.value:
-                return dealer_wins(player_hand, dealer_hand)
-
-            elif dealer_hand.value < player_hand.value:
-                return player_wins(player_hand, dealer_hand)
-
-            else:
-                return push(player_hand, dealer_hand)
-        elif (dealer_hand.value >= 6) and ((player_hand.value < 17) and (player_hand.value >= 8)): 
+        elif individual[index] == 1:
             x = "h"
-        elif ((dealer_hand.value >= 7) and (player_hand.value < 17)):
-            x = "h"
-        else:
-            x = "s"
+        elif individual[index] == 2:
+            x = "d" # double down
         
         if x[0].lower() == "h":
             hit(deck, player_hand)  # hit() function defined above
             if player_hand.value > 21:
                 return player_busts(player_hand, dealer_hand)
+            
+        if x[0].lower() == "d":
+            if (player_hand.value != 10) or (player_hand.value != 11) or (player_hand.value != 9):
+                hit(deck, player_hand)  # hit() function defined above
+                if player_hand.value > 21:
+                    return player_busts(player_hand, dealer_hand)
+            else:
+                hit(deck, player_hand)  # hit() function defined above
+                if player_hand.value > 21:
+                    return player_busts(player_hand, dealer_hand)
+
+                while dealer_hand.value < 17:
+                    hit(deck, dealer_hand)
+
+
+                if dealer_hand.value > 21:
+                    return dealer_busts(player_hand, dealer_hand)
+
+                elif dealer_hand.value > player_hand.value:
+                    return dealer_wins(player_hand, dealer_hand)
+
+                elif dealer_hand.value < player_hand.value:
+                    return player_wins(player_hand, dealer_hand)
+
+                else:
+                    return push(player_hand, dealer_hand)
+            
 
         if player_hand.value <= 21:
             while dealer_hand.value < 17:
                 hit(deck, dealer_hand)
 
 
-            show_all(player_hand, dealer_hand)
-
-            # Test different winning scenarios
             if dealer_hand.value > 21:
                 return dealer_busts(player_hand, dealer_hand)
 
@@ -234,16 +219,16 @@ def evaluate(individual):
             else:
                 return push(player_hand, dealer_hand)
 
+NGEN = int(sys.argv[1])
 toolbox = base.Toolbox()
-toolbox.register("attr_bool", random.randint, 0, 1)  # ルールを0/1で表現する場合
+toolbox.register("attr_bool", random.randint, 0, 1, 2)  # ルールを0/1で表現する場合
 toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, n=100)  # 100個のルールを持つ個体
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("evaluate", evaluate)
 toolbox.register("mate", tools.cxTwoPoint)
 toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
-toolbox.register("select", tools.selTournament, tournsize=3)
+toolbox.register("select", tools.selTournament, tournsize=5)
 
-NGEN = int(sys.argv[1])
 pop = toolbox.population(n=int(sys.argv[2]))
                                              
 hof = tools.ParetoFront()
