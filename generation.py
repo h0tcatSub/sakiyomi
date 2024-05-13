@@ -117,28 +117,32 @@ def evaluate(individual):
                 self.value -= 10
                 self.aces -= 1
 
-
-
-
     def show_all(player, dealer):
-        return 
-
+        print("\nPlayer's Hand:", *player.cards, sep="\n ")
+        print("Player's Hand =", player.value)
+        print("\nDealer's Hand:", *dealer.cards, sep="\n ")
+        print("Dealer's Hand =", dealer.value)
 
     def player_busts(player, dealer):
+        print("\n--- Player busts! ---")
         return -1,
 
 
     def player_wins(player, dealer):
+        print("\n--- You win! ---")
         return 1,
 
     def dealer_busts(player, dealer):
+        print("\n--- You win! ---")
         return 1,
 
 
     def dealer_wins(player, dealer):
+        print("\n--- Dealer wins! ---")
         return -1,
 
     def push(player, dealer):
+        print("\nIts a tie!")
         return 0,
 
     # FUNCTION DEFINITIONS:
