@@ -4,25 +4,24 @@ import numpy as np
 
 def calculate_index(player_hand, dealer_hand):
 
-    if (dealer_hand == 11) and (player_hand >= 17):
-        print("No Insurance + Stand")
-        exit()
-    elif (dealer_hand == 11) and (player_hand < 17):
-        print("Bet Insurance + Hit")
-        exit()
-    else: 
-        index = (player_hand % 11)* 10 % 13 
-        index += dealer_hand
+    print("----- result -----")
+    print()
 
-        print("----- result -----")
-        print()
-        # best_strategyのインデックスに対応する行動を取得
-        action = model[index]
-        if action == 0:
-            print("stand")
-        else:
-            print("hit")
-        return index
+    if (dealer_hand == 11) and (player_hand >= 17):
+        print("No Insurance")
+    elif (dealer_hand == 11) and (player_hand < 17):
+        print("Bet Insurance")
+    print()
+    index = (player_hand % 11)* 10 % 13 
+    index += dealer_hand
+
+    # best_strategyのインデックスに対応する行動を取得
+    action = model[index]
+    if action == 0:
+        print("stand")
+    else:
+        print("hit")
+    return index
 
 
 if len(sys.argv) != 4:
