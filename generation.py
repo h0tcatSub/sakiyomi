@@ -239,14 +239,18 @@ stats.register("min", np.min, axis=0)
 stats.register("max", np.max, axis=0)
 
 
-for individual in pop:
-    individual.fitness.values = toolbox.evaluate(individual)
-hof = tools.ParetoFront()
+try:
+    for individual in pop:
+        individual.fitness.values = toolbox.evaluate(individual)
+    hof = tools.ParetoFront()
 
-algorithms.eaSimple(pop, toolbox, cxpb=0.9, mutpb=0.1, ngen=NGEN, halloffame=hof, stats=stats, verbose=True)
+    algorithms.eaSimple(pop, toolbox, cxpb=0.9, mutpb=0.1, ngen=NGEN, halloffame=hof, stats=stats, verbose=True)
 
-print("結果を保存します")
-best_individual = tools.selBest(pop, k=1)[0]
-print(f"最良個体 : {best_individual}")
-np.save(sys.argv[2], best_individual)
-print("DONE!")
+except KeyboardInterrupt:
+    pass
+finally:
+    print("結果を保存します")
+    best_individual = tools.selBest(pop, k=1)[0]
+    print(f"最良個体 : {best_individual}")
+    np.save(sys.argv[2], best_individual)
+    print("DONE!")
