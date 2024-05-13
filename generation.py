@@ -161,7 +161,7 @@ def evaluate(individual):
     print(individual)
     while True:
         index = ((player_hand.value % 11) * 13 % len(individual)) - 1
-        index += dealer_hand.value * 13 
+        index *= dealer_hand.value * 13 
         index -= 1
         index %= len(individual)
         if individual[index] == 0:
