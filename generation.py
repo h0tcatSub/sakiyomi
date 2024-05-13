@@ -17,9 +17,6 @@ creator.create("Individual", list, fitness=creator.FitnessMax)
 def evaluate(individual):
     suits = ("Spades ♠", "Clubs ♣", "Hearts ♥", "Diamonds ♦")
 
-    #time.sleep(0.0001)
-    #playing = True
-
     class Card:
         def __init__(self, suit, rank):
             self.suit = suit
@@ -224,8 +221,8 @@ def evaluate(individual):
 
 NGEN = int(sys.argv[1])
 toolbox = base.Toolbox()
-toolbox.register("attr_bool", random.randint, 0, 2)  # ルールを0/1で表現する場合
-toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, n=170)  # 100個のルールを持つ個体
+toolbox.register("attr_bool", random.randint, 0, 2) 
+toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, n=170)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("evaluate", evaluate)
 toolbox.register("mate", tools.cxTwoPoint)
@@ -248,14 +245,6 @@ hof = tools.ParetoFront()
 
 algorithms.eaSimple(pop, toolbox, cxpb=0.9, mutpb=0.1, ngen=NGEN, halloffame=hof, stats=stats, verbose=True)
 
-#for gen in range(NGEN):
-#    offspring = algorithms.varAnd(population, toolbox, cxpb=0.5, mutpb=0.1)
-#    fits = toolbox.map(toolbox.evaluate, offspring)
-#    for fit, ind in zip(fits, offspring):
-#        ind.fitness.values = fit
-#    population = toolbox.select(offspring, k=len(population))
-
-# 結果の保存
 print("結果を保存します")
 best_individual = tools.selBest(pop, k=1)[0]
 print(f"最良個体 : {best_individual}")
