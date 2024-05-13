@@ -11,7 +11,7 @@ import sys
 import random
 
 # 個体表現と適応度関数
-creator.create("FitnessMax", base.Fitness, weights=(1.0,))  # 勝率を最大化する
+creator.create("FitnessMax", base.Fitness, weights=(0.509,))  # 勝率を最大化する
 creator.create("Individual", list, fitness=creator.FitnessMax)
 
 def evaluate(individual):
