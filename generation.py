@@ -158,7 +158,6 @@ def evaluate(individual):
     player_hand.add_card(deck.deal())
     dealer_hand.add_card(deck.deal())
     x = None
-    print(individual)
     while True:
         index = ((player_hand.value % 11) * 13 % len(individual)) - 1
         index *= dealer_hand.value * 13 
