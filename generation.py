@@ -257,5 +257,6 @@ algorithms.eaSimple(pop, toolbox, cxpb=0.9, mutpb=0.1, ngen=NGEN, halloffame=hof
 # 結果の保存
 print("結果を保存します")
 best_individual = tools.selBest(pop, k=1)[0]
+print(f"最良個体 : {best_individual}")
 np.save(sys.argv[2], best_individual)
 print("DONE!")
