@@ -125,7 +125,7 @@ def evaluate(individual):
 
     def player_busts(player, dealer):
         #print("\n--- Player busts! ---")
-        return -1.5,
+        return -1.25,
 
 
     def player_wins(player, dealer):
