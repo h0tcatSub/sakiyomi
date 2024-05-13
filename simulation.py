@@ -19,8 +19,10 @@ def calculate_index(player_hand, dealer_hand):
     action = model[index]
     if action == 0:
         print("stand")
-    else:
+    elif action == 1:
         print("hit")
+    else:
+        print("double")
     return index
 
 
