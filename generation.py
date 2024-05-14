@@ -154,53 +154,34 @@ def evaluate(individual):
     dealer_hand.add_card(deck.deal())
     x = None
     player_win_point = 0
-    for i in range(100):
-        while True:
-            index = ((player_hand.value)) + random.randint(0, len(individual))
-            index += (dealer_hand.value)
-            index %= len(individual)
-            if individual[index] == 0:
-                x = "s"
-            elif individual[index] == 1:
-                x = "h"
-            elif individual[index] == 2:
-                x = "d" # double down
-            if x[0].lower() == "h":
+    while True:
+        index = ((player_hand.value)) + random.randint(0, len(individual))
+        index += (dealer_hand.value)
+        index %= len(individual)
+        if individual[index] == 0:
+            x = "s"
+        elif individual[index] == 1:
+            x = "h"
+        elif individual[index] == 2:
+            x = "d" # double down
+        if x[0].lower() == "h":
+            hit(deck, player_hand)  # hit() function defined above
+            if player_hand.value > 21:
+                player_win_point += player_busts(player_hand, dealer_hand)
+                break
+            
+        elif x[0].lower() == "d":
+            if (player_hand.value != 10) or (player_hand.value != 11):
                 hit(deck, player_hand)  # hit() function defined above
                 if player_hand.value > 21:
                     player_win_point += player_busts(player_hand, dealer_hand)
                     break
-                
-            elif x[0].lower() == "d":
-                if (player_hand.value != 10) or (player_hand.value != 11) or (player_hand.value != 9):
-                    hit(deck, player_hand)  # hit() function defined above
-                    if player_hand.value > 21:
-                        player_win_point += player_busts(player_hand, dealer_hand)
-                        break
-                else:
-                    hit(deck, player_hand)  # hit() function defined above
-                    if player_hand.value > 21:
-                        player_win_point += player_busts(player_hand, dealer_hand)
-                        break
-
-                    while dealer_hand.value < 17:
-                        hit(deck, dealer_hand)
-
-
-                    if dealer_hand.value > 21:
-                        player_win_point += dealer_busts(player_hand, dealer_hand)
-                        break
-                    elif dealer_hand.value > player_hand.value:
-                        player_win_point += dealer_wins(player_hand, dealer_hand)
-                        break
-                    elif dealer_hand.value < player_hand.value:
-                        player_win_point += player_wins(player_hand, dealer_hand)
-                        break
-                    else:
-                        player_win_point += push(player_hand, dealer_hand)
-                        break
-
             else:
+                hit(deck, player_hand)  # hit() function defined above
+                if player_hand.value > 21:
+                    player_win_point += player_busts(player_hand, dealer_hand)
+                    break
+
                 while dealer_hand.value < 17:
                     hit(deck, dealer_hand)
 
@@ -217,6 +198,24 @@ def evaluate(individual):
                 else:
                     player_win_point += push(player_hand, dealer_hand)
                     break
+
+        else:
+            while dealer_hand.value < 17:
+                hit(deck, dealer_hand)
+
+
+            if dealer_hand.value > 21:
+                player_win_point += dealer_busts(player_hand, dealer_hand)
+                break
+            elif dealer_hand.value > player_hand.value:
+                player_win_point += dealer_wins(player_hand, dealer_hand)
+                break
+            elif dealer_hand.value < player_hand.value:
+                player_win_point += player_wins(player_hand, dealer_hand)
+                break
+            else:
+                player_win_point += push(player_hand, dealer_hand)
+                break
     ind_reward = None
     if player_win_point > 0:
         ind_reward = 1

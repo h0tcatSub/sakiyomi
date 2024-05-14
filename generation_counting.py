@@ -168,11 +168,7 @@ def evaluate(individual):
                 player_win_point += player_busts(player_hand, dealer_hand)
             
         elif x[0].lower() == "d":
-            if (player_hand.value != 10) or (player_hand.value != 11) or (player_hand.value != 9):
-                hit(deck, player_hand)  # hit() function defined above
-                if player_hand.value > 21:
-                    player_win_point += player_busts(player_hand, dealer_hand)
-            else:
+            if (player_hand.value == 10) or (player_hand.value == 11):
                 hit(deck, player_hand)  # hit() function defined above
                 if player_hand.value > 21:
                     player_win_point += player_busts(player_hand, dealer_hand)
@@ -192,6 +188,12 @@ def evaluate(individual):
 
                 else:
                     player_win_point += push(player_hand, dealer_hand)
+
+
+            else:
+                hit(deck, player_hand)  # hit() function defined above
+                if player_hand.value > 21:
+                    player_win_point += player_busts(player_hand, dealer_hand)
 
         else:
             while dealer_hand.value < 17:
