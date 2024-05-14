@@ -153,7 +153,7 @@ def evaluate(individual):
     x = None
     player_win_point = 0
     while len(deck.deck) > 0:
-        index = ((player_hand.value)) + random.randint(0, len(individual))
+        index = ((player_hand.value)) + random.randint(1, 4)
         index += (dealer_hand.value)
         index %= len(individual)
         if individual[index] == 0:
@@ -168,32 +168,25 @@ def evaluate(individual):
                 player_win_point += player_busts(player_hand, dealer_hand)
             
         elif x[0].lower() == "d":
-            if (player_hand.value == 10) or (player_hand.value == 11):
-                hit(deck, player_hand)  # hit() function defined above
-                if player_hand.value > 21:
-                    player_win_point += player_busts(player_hand, dealer_hand)
+            hit(deck, player_hand)  # hit() function defined above
+            if player_hand.value > 21:
+                player_win_point += player_busts(player_hand, dealer_hand)
 
-                while dealer_hand.value < 17:
-                    hit(deck, dealer_hand)
+            while dealer_hand.value < 17:
+                hit(deck, dealer_hand)
 
 
-                if dealer_hand.value > 21:
-                    player_win_point += dealer_busts(player_hand, dealer_hand)
+            if dealer_hand.value > 21:
+                player_win_point += dealer_busts(player_hand, dealer_hand)
 
-                elif dealer_hand.value > player_hand.value:
-                    player_win_point += dealer_wins(player_hand, dealer_hand)
+            elif dealer_hand.value > player_hand.value:
+                player_win_point += dealer_wins(player_hand, dealer_hand)
 
-                elif dealer_hand.value < player_hand.value:
-                    player_win_point += player_wins(player_hand, dealer_hand)
-
-                else:
-                    player_win_point += push(player_hand, dealer_hand)
-
+            elif dealer_hand.value < player_hand.value:
+                player_win_point += player_wins(player_hand, dealer_hand)
 
             else:
-                hit(deck, player_hand)  # hit() function defined above
-                if player_hand.value > 21:
-                    player_win_point += player_busts(player_hand, dealer_hand)
+                player_win_point += push(player_hand, dealer_hand)
 
         else:
             while dealer_hand.value < 17:
