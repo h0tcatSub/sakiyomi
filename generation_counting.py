@@ -153,8 +153,8 @@ def evaluate(individual):
     x = None
     player_win_point = 0
     while len(deck.deck) > 0:
-        index = ((player_hand.value)) + random.randint(1, 4)
-        index += (dealer_hand.value)
+        index = ((player_hand.value) * 13)# + random.randint(1, len(individual))
+        index += (dealer_hand.value + 10) * 13 # 基本的にディーラーが伏せているカードは10という前提
         index %= len(individual)
         if individual[index] == 0:
             x = "s"
@@ -217,7 +217,7 @@ def evaluate(individual):
 NGEN = int(sys.argv[1])
 toolbox = base.Toolbox()
 toolbox.register("attr_bool", random.randint, 0, 2) 
-toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, n=170)
+toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, n=178)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("evaluate", evaluate)
 toolbox.register("mate", tools.cxTwoPoint)
