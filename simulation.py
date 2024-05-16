@@ -13,8 +13,8 @@ def calculate_index(player_hand, dealer_hand):
         print("Bet Insurance")
 
     print()
-    index = ((player_hand * 13))
-    index += (dealer_hand + 10) * 13 # 基本的にディーラーが伏せているカードは10という前提
+    index = ((player_hand) + 11)
+    index += (dealer_hand + 11)# 基本的にディーラーが伏せているカードは10という前提
     index %= len(model)
 
     # best_strategyのインデックスに対応する行動を取得
