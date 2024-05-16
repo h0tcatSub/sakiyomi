@@ -156,7 +156,7 @@ def evaluate(individual):
     player_win_point = 0
     while True:
         index = ((player_hand.value) + 11) + random.randint(1, 4)
-        index += (dealer_hand.value + 11)# 基本的にディーラーが伏せているカードは10という前提
+        index += (dealer_hand.value + 10)# 基本的にディーラーが伏せているカードは10という前提
         index %= len(individual)
         if individual[index] == 0:
             x = "s"
