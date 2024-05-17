@@ -44,9 +44,11 @@ def evaluate(individual):
                 "K",
                 "A",
             )
-            for suit in suits:
-                for rank in self.ranks:
-                    self.deck.append(Card(suit, rank))
+
+            for i in range(4):
+                for suit in suits:
+                    for rank in self.ranks:
+                        self.deck.append(Card(suit, rank))
 
         def __str__(self):
             deck_comp = ""  # start with an empty string
@@ -58,6 +60,8 @@ def evaluate(individual):
             random.shuffle(self.deck)
 
         def deal(self):
+            if(len(self.deck) == 0):
+                return Card("Spade", random.choice(self.ranks))
             single_card = self.deck.pop()
             return single_card
 
@@ -154,7 +158,7 @@ def evaluate(individual):
     dealer_hand.add_card(deck.deal())
     x = None
     player_win_point = 0
-    while True:
+    while len(deck.deck) > 0:
         index = ((player_hand.value) + 11) + random.randint(1, 4)
         index += (dealer_hand.value + 10)# 基本的にディーラーが伏せているカードは10という前提
         index %= len(individual)
