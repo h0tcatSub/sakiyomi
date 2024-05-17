@@ -235,7 +235,7 @@ toolbox.register("evaluate", evaluate)
 toolbox.register("mate", tools.cxTwoPoint)
 toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
 toolbox.register("select", tools.selTournament, tournsize=10)
-pop = toolbox.population(n=NGEN)
+pop = toolbox.population(n=170)
 
                                              
 hof = tools.ParetoFront()
