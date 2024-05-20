@@ -229,13 +229,13 @@ def evaluate(individual):
 NGEN = int(sys.argv[1])
 toolbox = base.Toolbox()
 toolbox.register("attr_bool", random.randint, 0, 2) 
-toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, n=170)
+toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, n=100)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("evaluate", evaluate)
 toolbox.register("mate", tools.cxTwoPoint)
 toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
 toolbox.register("select", tools.selTournament, tournsize=10)
-pop = toolbox.population(n=170)
+pop = toolbox.population(n=100)
 
                                              
 hof = tools.ParetoFront()
